@@ -6,6 +6,7 @@ using System.Security.Claims;
 using System.Text;
 using TaskManagementApi.Services;
 using TaskManagementApi.Services.Interfaces;
+using TaskManagementApi.Middleware;
 
 namespace TaskManagementApi
 {
@@ -81,6 +82,7 @@ namespace TaskManagementApi
             builder.Services.AddAuthorization();
 
             var app = builder.Build();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             // Middleware
             if (app.Environment.IsDevelopment())

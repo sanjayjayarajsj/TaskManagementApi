@@ -8,12 +8,12 @@ namespace TaskManagementApi.Services.Interfaces
     {
         TaskItem CreateTask(TaskDto request, int userId);
 
-        List<TaskItem> GetAllTasks(int userId, bool isAdmin);
+        List<TaskItem> GetAllTasks(int userId, bool isAdmin, string? search);
 
         TaskItem? GetTaskById(int id, int userId, bool isAdmin);
 
         TaskItem? UpdateTask(int id, TaskDto request, int userId, bool isAdmin);
 
-        bool DeleteTask(int id);
+        bool DeleteTask(int id,int userID,bool isAdmin);
     }
 }

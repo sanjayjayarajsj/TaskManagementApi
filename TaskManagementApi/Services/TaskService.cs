@@ -7,6 +7,7 @@ namespace TaskManagementApi.Services
 {
     public class TaskService : ITaskService
     {
+        private static int nextId = 1;
         private static List<TaskItem> tasks = new();
 
         // CREATE TASK
@@ -14,7 +15,7 @@ namespace TaskManagementApi.Services
         {
             var task = new TaskItem
             {
-                Id = tasks.Count + 1,
+                Id = nextId++,
                 Title = request.Title,
                 Description = request.Description,
                 Status = request.Status,
@@ -27,14 +28,22 @@ namespace TaskManagementApi.Services
         }
 
         // GET ALL TASKS
-        public List<TaskItem> GetAllTasks(int userId, bool isAdmin)
+        public List<TaskItem> GetAllTasks(
+            int userId, bool isAdmin, string? search)
         {
-            if (isAdmin)
+            var result = isAdmin
+                ? tasks
+                : tasks.Where(t => t.UserId == userId).ToList();
+
+            if (!string.IsNullOrWhiteSpace(search))
             {
-                return tasks;
+                result = result
+                    .Where(t => t.Title.Contains(
+                        search, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
             }
 
-            return tasks.Where(t => t.UserId == userId).ToList();
+            return result;
         }
 
         // GET TASK BY ID
@@ -77,17 +86,13 @@ namespace TaskManagementApi.Services
         }
 
         // DELETE TASK
-        public bool DeleteTask(int id)
+public bool DeleteTask(int id,int userId,bool isAdmin)
         {
-            var task = tasks.FirstOrDefault(t => t.Id == id);
+            var task = GetTaskById(id, userId, isAdmin);
 
-            if (task == null)
-            {
-                return false;
-            }
-
+            if (task == null) 
+            return false;
             tasks.Remove(task);
-
             return true;
         }
     }

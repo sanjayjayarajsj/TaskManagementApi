@@ -51,11 +51,11 @@ namespace TaskManagementApi.Controllers
 
         // GET ALL TASKS
         [HttpGet]
-        public IActionResult GetAllTasks()
+        [HttpGet]
+        public IActionResult GetAllTasks(string? search)
         {
             var tasks = _taskService.GetAllTasks(
-                GetUserId(), IsAdmin()
-            );
+                GetUserId(), IsAdmin(), search);
 
             return Ok(tasks);
         }
@@ -97,14 +97,14 @@ namespace TaskManagementApi.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult DeleteTask(int id)
         {
-            var deleted = _taskService.DeleteTask(id);
+            var deleted = _taskService.DeleteTask(id,GetUserId(),IsAdmin());
 
             if (!deleted)
             {
                 return NotFound("Task not found");
             }
 
-            return Ok("Task deleted successfully");
+            return NoContent();
         }
     }
 }

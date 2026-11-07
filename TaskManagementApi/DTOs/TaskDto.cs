@@ -11,6 +11,8 @@ namespace TaskManagementApi.DTOs
         [Required]
         public string Description { get; set; } = string.Empty;
 
+        [RegularExpression("^(Pending|InProgress|Completed)$",
+     ErrorMessage = "Status must be Pending, InProgress, or Completed")]
         public string Status { get; set; } = "Pending";
     }
 }

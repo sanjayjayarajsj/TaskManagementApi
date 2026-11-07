@@ -24,7 +24,7 @@ namespace TaskManagementApi.Controllers
             {
                 var result = _authService.Register(request);
 
-                return Ok(new { message = result });
+                return StatusCode(201, new { message = result });
             }
             catch (Exception ex)
             {
@@ -38,9 +38,8 @@ namespace TaskManagementApi.Controllers
         {
             try
             {
-                var token = _authService.Login(request);
-
-                return Ok(new { token = token });
+                var tokens = _authService.Login(request);
+                return Ok(tokens);
             }
             catch (Exception ex)
             {

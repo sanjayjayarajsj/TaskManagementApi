@@ -1,11 +1,13 @@
 ﻿using TaskManagementApi.DTOs;
 
-
 namespace TaskManagementApi.Services.Interfaces
 {
     public interface IAuthService
     {
         string Register(RegisterDto request);
-        string Login(LoginDto request);
+
+        TokenResponseDto Login(LoginDto request);
+
+        TokenResponseDto RefreshToken(RefreshTokenDto request);
     }
 }
